@@ -42,8 +42,8 @@ class TileImageRotater : public ImageRotater {
 
   ~TileImageRotater() = default;
 
-  void RotateKernal(const int *input, int width, int height, int w_start, int h_start,
-                    int w_max, int h_max, int *output) {
+  inline void RotateKernal(const int *input, int width, int height, int w_start,
+                           int h_start, int w_max, int h_max, int *output) {
     for (int hi = h_start; hi < h_max; hi++) {
       for (int wi = w_start; wi < w_max; wi++) {
         output[wi * height + height - 1 - hi] = input[hi * width + wi];
