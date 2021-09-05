@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(cmake_project_template VERSION 1.0.0)
+project(HPC VERSION 1.0.0)
 
 if(NOT CMAKE_BUILD_TYPE)
   message(
@@ -10,6 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-g")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module")
@@ -59,3 +60,4 @@ add_custom_target(
   COMMAND ${CMAKE_COMMAND} "--graphviz=${DG_DIR}/${DG_FILE_NAME}.dot"
           ${CMAKE_SOURCE_DIR}
   COMMAND dot -Tpng ${DG_DIR}/${DG_FILE_NAME}.dot -o ${DG_FILE_NAME}.png)
+
