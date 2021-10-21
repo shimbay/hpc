@@ -1,5 +1,7 @@
 #include <benchmark/benchmark.h>
 
+#include <cstddef>
+
 #include "iter.h"
 
 static void Arg_Iter(benchmark::internal::Benchmark *b) {
@@ -10,19 +12,22 @@ static void Arg_Iter(benchmark::internal::Benchmark *b) {
 
 static void BM_VecIter(benchmark::State &state) {
   VecIter vi(state.range(0));
-  int64_t t = 0;
+  size_t total = 0;
   for (auto _ : state) {
-    t = vi.Iter();
+    total += vi.Iter();
   }
+  printf("total: %ld\n", total);
 }
 
 BENCHMARK(BM_VecIter)->Apply(Arg_Iter);
 
 static void BM_ListIter(benchmark::State &state) {
+  size_t total = 0;
   ListIter li(state.range(0));
   for (auto _ : state) {
-    li.Iter();
+    total += li.Iter();
   }
+  printf("total: %ld\n", total);
 }
 
 BENCHMARK(BM_ListIter)->Apply(Arg_Iter);
