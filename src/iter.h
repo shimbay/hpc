@@ -13,8 +13,7 @@ class VecIter {
   VecIter(size_t size) : size_(size) {
     data_.resize(size);
     for (auto &item : data_) {
-      item = std::make_unique<BigObject>();
-      item->data[0] = 1;
+      item.data[0] = 1;
     }
   };
 
@@ -23,14 +22,14 @@ class VecIter {
   int64_t Iter() {
     int64_t total = 0;
     for (int i = 0; i < size_; i++) {
-      total += data_[i]->data[0];
+      total += data_[i].data[0];
     }
     return total;
   }
 
  private:
   size_t size_;
-  std::vector<std::unique_ptr<BigObject>> data_;
+  std::vector<BigObject> data_;
 };
 
 class ListIter {
