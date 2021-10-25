@@ -36,7 +36,9 @@ class ListIter {
  public:
   ListIter(size_t size) : size_(size) {
     for (int i = 0; i < size_; i++) {
-      data_.push_back(BigObject{});
+      BigObject o{};
+      o.data[0] = 1;
+      data_.push_back(o);
     }
   };
 
