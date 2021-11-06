@@ -78,6 +78,3 @@ BENCHMARK(BM_exitWithBasicException);
 BENCHMARK(BM_exitWithMessageException);
 BENCHMARK(BM_exitWithReturn);
 BENCHMARK(BM_exitWithErrorCode);
-
-// Run the tests!
-BENCHMARK_MAIN();
