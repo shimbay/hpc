@@ -6,33 +6,6 @@
 const int randomRange = 2;  // Give me a number between 0 and 2.
 const int errorInt = 0;     // Stop every time the number is 0.
 
-template <class T>
-class Expected {
- private:
-  // Our union of value and error. Only one of these can exist in any `Expected`
-  // object created.
-  union {
-    T m_value;
-    std::exception m_exception;
-  };
-
- public:
-  // Instantiate the `Expected` object with the successfully created value.
-  Expected(const T& value) { m_value = value; }
-
-  // Instantiate the `Expected` object with an exception.
-  Expected(const std::exception& ex) { m_exception = ex; }
-
-  // Was there an error?
-  bool hasError();
-
-  // Access the value.
-  T value() { return m_value; }
-
-  // Access the exception.
-  std::exception error() { return m_exception; }
-};
-
 int getRandom() { return random() % randomRange; }
 
 // 1.
@@ -60,14 +33,6 @@ void exitWithReturn() {
 int exitWithErrorCode() {
   if (getRandom() == errorInt) {
     return -1;
-  }
-  return 0;
-}
-
-// 5. Expected! Testcase 5 function.
-Expected<int> exitWithExpected() {
-  if (getRandom() == errorInt) {
-    return std::runtime_error();  //  Return; don't throw!
   }
   return 0;
 }
