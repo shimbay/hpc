@@ -2,34 +2,31 @@
 #include <stdexcept>
 
 #include "benchmark/benchmark.h"
+#include "nonstd/expected.hpp"
 
 const int randomRange = 2;  // Give me a number between 0 and 2.
-const int errorInt = 0;     // Stop every time the number is 0.
+const int errorInt = -1;    // Stop every time the number is 0.
 
 int getRandom() { return random() % randomRange; }
 
-// 1.
 void exitWithBasicException() {
   if (getRandom() == errorInt) {
     throw -2;
   }
 }
 
-// 2.
 void exitWithMessageException() {
   if (getRandom() == errorInt) {
     throw std::runtime_error("Halt! Who goes there?");
   }
 }
 
-// 3.
 void exitWithReturn() {
   if (getRandom() == errorInt) {
     return;
   }
 }
 
-// 4.
 int exitWithErrorCode() {
   if (getRandom() == errorInt) {
     return -1;
@@ -37,7 +34,14 @@ int exitWithErrorCode() {
   return 0;
 }
 
-// 1.
+using namespace nonstd;
+expected<int, std::string> exitWithExpected() {
+  if (getRandom() == errorInt) {
+    return make_unexpected("error");
+  }
+  return 1;
+}
+
 void BM_exitWithBasicException(benchmark::State& state) {
   for (auto _ : state) {
     try {
@@ -47,7 +51,7 @@ void BM_exitWithBasicException(benchmark::State& state) {
     }
   }
 }
-// 2.
+
 void BM_exitWithMessageException(benchmark::State& state) {
   for (auto _ : state) {
     try {
@@ -57,13 +61,13 @@ void BM_exitWithMessageException(benchmark::State& state) {
     }
   }
 }
-// 3.
+
 void BM_exitWithReturn(benchmark::State& state) {
   for (auto _ : state) {
     exitWithReturn();
   }
 }
-// 4.
+
 void BM_exitWithErrorCode(benchmark::State& state) {
   for (auto _ : state) {
     auto err = exitWithErrorCode();
@@ -73,8 +77,17 @@ void BM_exitWithErrorCode(benchmark::State& state) {
   }
 }
 
-// Add the tests.
+void BM_exitWithExpected(benchmark::State& state) {
+  for (auto _ : state) {
+    auto ret = exitWithExpected();
+    if (ret.has_exception<std::string>()) {
+      // `handle_error()` ...
+    }
+  }
+}
+
 BENCHMARK(BM_exitWithBasicException);
 BENCHMARK(BM_exitWithMessageException);
 BENCHMARK(BM_exitWithReturn);
 BENCHMARK(BM_exitWithErrorCode);
+BENCHMARK(BM_exitWithExpected);

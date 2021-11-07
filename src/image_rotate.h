@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "common.h"
+#include "nonstd/expected.hpp"
 
 class ImageRotater {
  public:
